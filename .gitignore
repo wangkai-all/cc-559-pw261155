@@ -32,3 +32,6 @@ test-results/
 *.sqlite3-shm
 *.sqlite3-journal
 !*.traineddata.gz
+
+# 演示运行时数据（运行 server.js 自动生成）
+data/

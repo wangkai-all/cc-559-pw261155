@@ -1,0 +1,14 @@
+{
+  "name": "pointwise-delivery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "本地公开数据站线路图/站点表的断点续传与成套发布演示（仅使用 Node.js 内置模块）",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

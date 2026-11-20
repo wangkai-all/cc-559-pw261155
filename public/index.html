@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>线路资料断点续传与成套发布演示</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>本地公开数据站 · 线路图 / 站点表 断点续传演示</h1>
+    <p class="subtitle">
+      数据站发布同版本的线路图（SVG）与站点表（CSV）。传输掉线后站点可能已修订附件，
+      下载器恢复前先校验原版本标记，装配器只发布图、表配得上的一份。
+    </p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>操作面板</h2>
+      <div class="controls">
+        <button id="btn-collect" class="primary">开始采集线路资料</button>
+        <button id="btn-break" class="warn">模拟断点后修订</button>
+        <button id="btn-status">查看配套附件状态</button>
+      </div>
+      <div class="controls secondary">
+        <button id="btn-break-only">仅模拟断点（站点不修订）</button>
+        <button id="btn-retry">断点重试（手工触发，按标记决策）</button>
+        <button id="btn-retry-force">断点重试（强制从头取新版本）</button>
+        <button id="btn-missing">模拟配套表缺失</button>
+        <button id="btn-restore">站点恢复站点表并补齐</button>
+      </div>
+      <div class="controls mode-row">
+        <label>版本标记可靠性：</label>
+        <button id="btn-mode-strong" class="mode active">强标记（含 SHA-256 哈希）</button>
+        <button id="btn-mode-weak" class="mode">弱标记（仅版本号）</button>
+        <button id="btn-reset" class="ghost">重置为空目录</button>
+      </div>
+      <p class="hint">
+        推荐演示顺序：开始采集 → 模拟断点后修订 → 断点重试（看到版本漂移后从头取 v2）；
+        弱标记分支：仅模拟断点 → 切弱标记 → 断点重试（标记不可靠，即便版本号相同也从头取）；
+        异常分支：开始采集 → 模拟配套表缺失 → 查看状态（装配 BLOCKED，不发布配不上的一份）。
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>业务结果（处理前后对比）</h2>
+      <!-- 自动化核对用：每次操作后写入最新证据快照（单行 JSON） -->
+      <div id="evidence"
+           data-evidence-result="init"
+           data-evidence-operation=""
+           data-evidence-verdict=""
+           data-evidence-published=""
+           role="status"
+           aria-live="polite">
+        <div class="placeholder">尚无操作。点击上方按钮后，这里展示计算结果与处理前后变化。</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>当前配套附件状态</h2>
+      <div id="status-panel" class="status-panel">
+        <div class="placeholder">点击「查看配套附件状态」或执行任意操作后刷新。</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>站点事件流水</h2>
+      <ol id="event-log" class="event-log"></ol>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
